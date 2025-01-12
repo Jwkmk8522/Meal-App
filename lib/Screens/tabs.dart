@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mealapp/Screens/categories_screen.dart';
 import 'package:mealapp/Screens/favourite_screen.dart';
+import 'package:mealapp/Widgets/custom_drawer.dart';
 
 class Tabs extends StatefulWidget {
   const Tabs({super.key});
@@ -30,6 +31,7 @@ class _TabsState extends State<Tabs> {
         centerTitle: true,
         title: Text(_pages[_selectedIndex]['title'] as String),
       ),
+      drawer: CustomDrawer(),
       body: _pages[_selectedIndex]['page'] as Widget,
       bottomNavigationBar: BottomNavigationBar(
           currentIndex: _selectedIndex,
