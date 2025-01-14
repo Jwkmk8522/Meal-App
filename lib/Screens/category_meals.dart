@@ -1,34 +1,43 @@
 import 'package:flutter/material.dart';
-import 'package:mealapp/Dummy_Data/dummy_categories.dart';
+
+import 'package:mealapp/Models/meal.dart';
+
 import 'package:mealapp/Widgets/meal_item.dart';
 
 class CategoryMeals extends StatelessWidget {
-  final String categoryTitle;
-  final String categoryId;
-  CategoryMeals(
-      {super.key, required this.categoryTitle, required this.categoryId});
+  static const routeName = '/categoryMealScreen';
+  final List<Meal> filterMeal;
+  const CategoryMeals({super.key, required this.filterMeal});
 
   @override
   Widget build(BuildContext context) {
-    final filterMeal = dummyMeals.where((meal) {
+    final routeArgs =
+        ModalRoute.of(context)!.settings.arguments as Map<String, String>;
+
+    final categoryTitle = routeArgs['categoryTitle']!;
+
+    final categoryId = routeArgs['categoryId'];
+
+    final displayMeal = filterMeal.where((meal) {
       return meal.categories.contains(categoryId);
     }).toList();
     return Scaffold(
-        appBar: AppBar(
-          title: Text(categoryTitle),
-        ),
-        body: ListView.builder(
-          itemCount: filterMeal.length,
-          itemBuilder: (context, index) {
-            return MealItem(
-              id: filterMeal[index].id,
-              imageUrl: filterMeal[index].imageUrl,
-              title: filterMeal[index].title,
-              offardibility: filterMeal[index].affordability,
-              duration: filterMeal[index].duration,
-              complexity: filterMeal[index].complexity,
-            );
-          },
-        ));
+      appBar: AppBar(
+        title: Text(categoryTitle),
+      ),
+      body: ListView.builder(
+        itemCount: displayMeal.length,
+        itemBuilder: (context, index) {
+          return MealItem(
+            id: displayMeal[index].id,
+            imageUrl: displayMeal[index].imageUrl,
+            title: displayMeal[index].title,
+            offardibility: displayMeal[index].affordability,
+            duration: displayMeal[index].duration,
+            complexity: displayMeal[index].complexity,
+          );
+        },
+      ),
+    );
   }
 }

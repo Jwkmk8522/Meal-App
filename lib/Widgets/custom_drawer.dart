@@ -43,13 +43,17 @@ class CustomDrawer extends StatelessWidget {
           ),
           const SizedBox(height: 20),
           builderListTile(context, "Meals", Icons.no_meals, () {
-            Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (context) => const Tabs()));
+            Navigator.of(context).pushReplacement(MaterialPageRoute(
+                builder: (context) => const Tabs(
+                      favouriteMeal: [],
+                    )));
           }),
           const Divider(),
           builderListTile(context, "Filter Meals", Icons.filter, () {
-            Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (context) => const FilterScreen()));
+            Navigator.of(context).pushNamedAndRemoveUntil(
+              FilterScreen.routeName,
+              (route) => false,
+            );
           })
         ],
       ),

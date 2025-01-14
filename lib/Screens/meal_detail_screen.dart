@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:mealapp/Dummy_Data/dummy_categories.dart';
 
-class MealDetailScreen extends StatelessWidget {
-  final String id;
+class MealDetailScreen extends StatefulWidget {
+  static const routeName = '/mealDetailScreen';
+  final Function toogleFavourite;
+  final Function isMealFavourite;
+  const MealDetailScreen(
+      {super.key,
+      required this.toogleFavourite,
+      required this.isMealFavourite});
+  @override
+  State<MealDetailScreen> createState() => _MealDetailScreenState();
+}
 
-  const MealDetailScreen({super.key, required this.id});
-
+class _MealDetailScreenState extends State<MealDetailScreen> {
   Widget titleDetail(BuildContext context, String title) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 10),
@@ -18,8 +26,11 @@ class MealDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final routeArgs =
+        ModalRoute.of(context)!.settings.arguments as Map<String, String>;
+    final mealId = routeArgs['mealId'];
     final selectedMeal = dummyMeals.firstWhere((meal) {
-      return meal.id == id;
+      return meal.id == mealId;
     });
     return Scaffold(
       appBar: AppBar(
@@ -33,6 +44,9 @@ class MealDetailScreen extends StatelessWidget {
               width: double.infinity,
               child: Image.network(
                 selectedMeal.imageUrl,
+                errorBuilder: (context, error, stackTrace) {
+                  return const Text("connect internet");
+                },
                 fit: BoxFit.cover,
               ),
             ),
@@ -87,6 +101,15 @@ class MealDetailScreen extends StatelessWidget {
           ],
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+          child: Icon(
+            widget.isMealFavourite(mealId) ? Icons.star : Icons.star_border,
+          ),
+          onPressed: () {
+            setState(() {
+              widget.toogleFavourite(mealId);
+            });
+          }),
     );
   }
 }

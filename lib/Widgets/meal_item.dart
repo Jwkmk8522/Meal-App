@@ -9,14 +9,16 @@ class MealItem extends StatelessWidget {
   final Affordability offardibility;
   final int duration;
   final Complexity complexity;
-  const MealItem(
-      {super.key,
-      required this.id,
-      required this.imageUrl,
-      required this.title,
-      required this.offardibility,
-      required this.duration,
-      required this.complexity});
+
+  const MealItem({
+    super.key,
+    required this.id,
+    required this.imageUrl,
+    required this.title,
+    required this.offardibility,
+    required this.duration,
+    required this.complexity,
+  });
 
   String get complexityText {
     switch (complexity) {
@@ -51,10 +53,10 @@ class MealItem extends StatelessWidget {
   }
 
   void selectMeal(BuildContext context) {
-    Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => MealDetailScreen(
-              id: id,
-            )));
+    Navigator.of(context).pushNamed(
+      MealDetailScreen.routeName,
+      arguments: {'mealId': id},
+    );
   }
 
   @override
